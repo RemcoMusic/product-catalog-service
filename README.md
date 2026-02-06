@@ -1,2 +1,4 @@
-# product-catalog-service
+# Product catalog service
+
+----
 This is a service to managing a product catalog.
