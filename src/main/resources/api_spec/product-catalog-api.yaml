@@ -1,0 +1,128 @@
+openapi: 3.1.0
+info:
+  title: Product catalog service
+  description: Product catalog service
+  version: 1.0.0
+servers:
+  - url: 'https://localhost:8080'
+paths:
+  /products:
+    get:
+      summary: List all products
+      responses:
+        "200":
+          description: List of products
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Product"
+    post:
+      summary: Create or update a product
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Product"
+      responses:
+        "201":
+          description: Product created or updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Product"
+
+  /products/{productId}:
+    get:
+      summary: Get product by ID
+      parameters:
+        - name: productId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Product found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Product"
+        "404":
+          description: Product not found
+
+  /products/search:
+    get:
+      summary: Full-text product search
+      parameters:
+        - name: q
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Matching products
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Product"
+
+  /sync/prices:
+    post:
+      summary: Push price updates from external system
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: "#/components/schemas/PriceUpdate"
+      responses:
+        "204":
+          description: Prices synchronized successfully
+
+components:
+  schemas:
+    Product:
+      type: object
+      required:
+        - id
+        - name
+        - price
+        - currency
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        category:
+          type: string
+        price:
+          type: number
+          format: double
+        currency:
+          type: string
+          example: EUR
+
+    PriceUpdate:
+      type: object
+      required:
+        - productId
+        - price
+        - currency
+      properties:
+        productId:
+          type: string
+        price:
+          type: number
+          format: double
+        currency:
+          type: string

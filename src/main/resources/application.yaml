@@ -1,3 +1,19 @@
+product-catalog:
+  database-url: localhost:5432
+  database-schema: postgres
+  database-username: ${DB_USERNAME}
+  database-password: ${DB_PASSWORD}
+
 spring:
   application:
-    name: product
+    name: product-catalog-service
+  datasource:
+    url: jdbc:postgresql://${product-catalog.database-url}/${product-catalog.database-schema}
+    username: ${product-catalog.database-username}
+    password: ${product-catalog.database-password}
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
