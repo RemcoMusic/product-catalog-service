@@ -1,43 +1,44 @@
 package com.jdriven.product_catalog.infrastructure.controller;
 
-import com.jdriven.product_catalog.application.service.CreateProductService;
+import com.jdriven.product_catalog.application.service.ProductService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.openapitools.api.ProductsApi;
 import org.openapitools.model.Product;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+@Slf4j
 @RestController
 @RequiredArgsConstructor
 public class ProductsController implements ProductsApi {
 
-    Logger log = LoggerFactory.getLogger(ProductsController.class);
+    private final ProductService productService;
 
-    final CreateProductService createProductService;
-
-    //TODO
     @Override
     public ResponseEntity<List<Product>> productsGet() {
-        return ProductsApi.super.productsGet();
+        return ResponseEntity.ok(PresentationProductMapper.INSTANCE
+                .toPresentationProducts(productService.findAllProducts()));
+    }
+
+    @Override
+    public ResponseEntity<Product> productsSerialNumberGet(String serialNumber) {
+        log.info("Getting product by serial number {}", serialNumber);
+        return ResponseEntity.ok(PresentationProductMapper.INSTANCE
+                        .toPresentationProduct(productService.findBySerialNumber(serialNumber)));
     }
 
     @Override
     public ResponseEntity<Product> productsPost(Product product) {
         log.info("Creating product {}", product);
-        com.jdriven.product_catalog.domain.Product domainProduct = createProductService
+        com.jdriven.product_catalog.domain.Product domainProduct = productService
                 .createProduct(PresentationProductMapper.INSTANCE.toDomainProduct(product));
         log.info("Created product {}", domainProduct);
-        return ResponseEntity.ok(PresentationProductMapper.INSTANCE.toPresentationProduct(domainProduct));
-    }
-
-    //TODO
-    @Override
-    public ResponseEntity<Product> productsProductIdGet(String productId) {
-        return ProductsApi.super.productsProductIdGet(productId);
+        return ResponseEntity
+                .status(201)
+                .body(PresentationProductMapper.INSTANCE.toPresentationProduct(domainProduct));
     }
 
     //TODO
@@ -45,4 +46,6 @@ public class ProductsController implements ProductsApi {
     public ResponseEntity<List<Product>> productsSearchGet(String q) {
         return ProductsApi.super.productsSearchGet(q);
     }
+
+
 }

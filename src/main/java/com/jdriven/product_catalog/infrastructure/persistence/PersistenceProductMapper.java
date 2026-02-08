@@ -5,10 +5,13 @@ import com.jdriven.product_catalog.infrastructure.persistence.entity.ProductEnti
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
+import java.util.List;
+
 @Mapper(componentModel = "spring")
 public interface PersistenceProductMapper {
     PersistenceProductMapper INSTANCE = Mappers.getMapper(PersistenceProductMapper.class);
 
     ProductEntity productToProductEntity(Product product);
     Product productEntityToProduct(ProductEntity productEntity);
+    List<Product> productsToProductEntities(List<ProductEntity> productEntities);
 }

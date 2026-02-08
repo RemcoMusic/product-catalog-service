@@ -34,11 +34,11 @@ paths:
               schema:
                 $ref: "#/components/schemas/Product"
 
-  /products/{productId}:
+  /products/{serialNumber}:
     get:
-      summary: Get product by ID
+      summary: Get product by serialNumber
       parameters:
-        - name: productId
+        - name: serialNumber
           in: path
           required: true
           schema:
@@ -92,12 +92,12 @@ components:
     Product:
       type: object
       required:
-        - id
+        - serialNumber
         - name
         - price
         - currency
       properties:
-        id:
+        serialNumber:
           type: string
         name:
           type: string
@@ -115,11 +115,11 @@ components:
     PriceUpdate:
       type: object
       required:
-        - productId
+        - serialNumber
         - price
         - currency
       properties:
-        productId:
+        serialNumber:
           type: string
         price:
           type: number
