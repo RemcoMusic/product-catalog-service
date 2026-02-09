@@ -37,4 +37,9 @@ public class ProductRepositoryAdapter implements ProductRepositoryPort {
     public boolean existsBySerialNumber(String serialNumber) {
         return postgresRepository.existsBySerialNumber(serialNumber);
     }
+
+    @Override
+    public List<Product> fullTextSearch(String search) {
+        return PersistenceProductMapper.INSTANCE.productsToProductEntities(postgresRepository.searchFullText(search));
+    }
 }

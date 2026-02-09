@@ -5,13 +5,14 @@ import lombok.Data;
 
 @Data
 @Entity
+@Table(name = "products")
 public class ProductEntity {
 
     @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String serialNumber;
 
     @Column(nullable = false)
@@ -26,5 +27,4 @@ public class ProductEntity {
 
     @Column(nullable = false)
     private String currency;
-
 }

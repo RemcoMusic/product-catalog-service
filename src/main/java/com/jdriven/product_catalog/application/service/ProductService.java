@@ -31,4 +31,8 @@ public class ProductService {
                 .findBySerialNumber(serialNumber)
                 .orElseThrow(() -> new ProductNotFoundException(serialNumber));
     }
+
+    public List<Product> fullTextSearch(String search) {
+        return productRepositoryPort.fullTextSearch(search);
+    }
 }

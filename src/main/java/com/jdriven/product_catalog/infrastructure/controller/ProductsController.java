@@ -19,6 +19,7 @@ public class ProductsController implements ProductsApi {
 
     @Override
     public ResponseEntity<List<Product>> productsGet() {
+        log.info("Getting products");
         return ResponseEntity.ok(PresentationProductMapper.INSTANCE
                 .toPresentationProducts(productService.findAllProducts()));
     }
@@ -41,11 +42,8 @@ public class ProductsController implements ProductsApi {
                 .body(PresentationProductMapper.INSTANCE.toPresentationProduct(domainProduct));
     }
 
-    //TODO
     @Override
     public ResponseEntity<List<Product>> productsSearchGet(String q) {
-        return ProductsApi.super.productsSearchGet(q);
+        return ResponseEntity.ok(PresentationProductMapper.INSTANCE.toPresentationProducts(productService.fullTextSearch(q)));
     }
-
-
 }
