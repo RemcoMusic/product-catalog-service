@@ -1,10 +1,23 @@
 services:
+#  product_service:
+#    image: product-catalog-service:1.0
+#    environment:
+#      PRODUCT_CATALOG.DATABASE_URL: postgres:5432
+#      PRODUCT_CATALOG.DATABASE_USERNAME: ${DB_USERNAME}
+#      PRODUCT_CATALOG.DATABASE_PASSWORD: ${DB_PASSWORD}
+#      PRODUCT_CATALOG.REDIS_URL: redis
+#    ports:
+#      - "8080:8080"
   postgres:
     image: postgres:18-alpine
-    restart: always
     environment:
       POSTGRES_DB: postgres
       POSTGRES_USER: ${DB_USERNAME}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
     ports:
       - "5432:5432"
+  redis:
+    image: redis:8.4-alpine
+    ports:
+      - "6379:6379"
+

@@ -5,6 +5,7 @@ import com.jdriven.product_catalog.application.exception.ProductNotFoundExceptio
 import com.jdriven.product_catalog.application.ports.ProductRepositoryPort;
 import com.jdriven.product_catalog.domain.Product;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -26,12 +27,14 @@ public class ProductService {
         return productRepositoryPort.findAllProducts();
     }
 
+    @Cacheable(value = "product:by:serial:number")
     public Product findBySerialNumber(String serialNumber) {
         return productRepositoryPort
                 .findBySerialNumber(serialNumber)
                 .orElseThrow(() -> new ProductNotFoundException(serialNumber));
     }
 
+    @Cacheable(value = "products:by:search", key = "#search", unless = "#result == null || #result.isEmpty()")
     public List<Product> fullTextSearch(String search) {
         return productRepositoryPort.fullTextSearch(search);
     }

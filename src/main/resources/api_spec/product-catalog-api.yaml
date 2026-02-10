@@ -19,7 +19,7 @@ paths:
                 items:
                   $ref: "#/components/schemas/Product"
     post:
-      summary: Create or update a product
+      summary: Creates a product
       requestBody:
         required: true
         content:

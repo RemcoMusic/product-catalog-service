@@ -8,7 +8,9 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 import java.util.Optional;
 
-interface PostgresRepository extends JpaRepository<ProductEntity, Long> {
+public interface PostgresRepository extends JpaRepository<ProductEntity, Long> {
+    List<ProductEntity> findAllBySerialNumberIn(List<String> serialNumbers);
+
     Optional<ProductEntity> findBySerialNumber(String serialNumber);
 
     boolean existsBySerialNumber(String serialNumber);

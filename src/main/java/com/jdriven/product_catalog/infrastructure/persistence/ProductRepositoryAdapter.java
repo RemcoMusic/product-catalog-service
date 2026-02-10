@@ -24,7 +24,16 @@ public class ProductRepositoryAdapter implements ProductRepositoryPort {
 
     @Override
     public List<Product> findAllProducts() {
-        return PersistenceProductMapper.INSTANCE.productsToProductEntities(postgresRepository.findAll());
+        return postgresRepository.findAll().stream()
+                .map(PersistenceProductMapper.INSTANCE::productEntityToProduct)
+                .toList();
+    }
+
+    @Override
+    public List<Product> findAllBySerialNumbers(List<String> serialNumbers) {
+        return postgresRepository.findAllBySerialNumberIn(serialNumbers).stream()
+                .map(PersistenceProductMapper.INSTANCE::productEntityToProduct)
+                .toList();
     }
 
     @Override

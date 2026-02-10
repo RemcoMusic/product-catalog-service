@@ -11,6 +11,8 @@ public interface ProductRepositoryPort {
 
     List<Product> findAllProducts();
 
+    List<Product> findAllBySerialNumbers(List<String> serialNumbers);
+
     Optional<Product> findBySerialNumber(String serialNumber);
 
     boolean existsBySerialNumber(String serialNumber);
